@@ -6,11 +6,21 @@
 			<flux:breadcrumbs.item>Editar</flux:breadcrumbs.item>
 		</flux:breadcrumbs>
 	</div>
+	<form action="{{ route('admin.posts.update', $post)}}" method="POST" enctype="multipart/form-data" class="space-y-4">
+		@csrf
+		@method('PUT')
+		<div class="relative">
 
-	<div class="card">
-		<form action="{{ route('admin.posts.update', $post)}}" method="POST" class="space-y-4">
-			@csrf
-			@method('PUT')
+			<img id="imgPreview" class="w-full aspect-video object-cover object-center" src="{{ $post->image_path ? Storage::url($post->image_path) : "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"}}">
+			<div class="absolute top-4 right-4">
+				<label class="bg-white px-4 py-2 rounded-lg cursor-pointer">
+					Cambiar imagen
+					<input class="hidden" type="file" name="image" accepts="image/*" onchange="preview_image(event, '#imgPreview')">
+				</label>
+			</div>	
+		</div>
+		
+		<div class="card">
 
 			<flux:input label="Título" name="title" value="{{ old('title', $post->title) }}" placeholder="Escribe el título del post" class="mb-4"/>
 			<flux:input id="slug" label="Slug" name="slug" value="{{ old('slug', $post->slug) }}" placeholder="Escribe el slug del post" class="mb-4"/>
@@ -44,7 +54,7 @@
 				<flux:button variant="primary" type="submit">
 					Enviar
 				</flux:button>
-			</div>
-		</form>
-	</div>
+			</div>	
+		</div>
+	</form>
 </x-layouts.app>
